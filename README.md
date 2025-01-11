@@ -103,7 +103,7 @@ $ docker-compose down
 * Configure CI/CD (Continuous Integration/Continuous Delivery) pipelines for test and deployment automation.
 
 ### Contribute:
-For any issues, comments or feedback: [here](https://github.com/LBM18?tab=repositories)
+For any issues, comments or feedback: [Here](https://github.com/LBM18/cadmus-challenge/issues)
 ___________________________________________________________________________________________________________________________________________________
 ### Reference Documentation:
 For further reference, please consider the following sections:
