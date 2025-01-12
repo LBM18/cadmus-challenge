@@ -86,8 +86,8 @@ public class MusicController extends BaseController {
             @PathVariable("id") Long id
     ) {
         try {
-            _service.delete(id);
-            return createSuccessResponse(null, HttpStatus.ACCEPTED, LOGGER);
+            var result = _service.delete(id);
+            return createSuccessResponse(result, HttpStatus.ACCEPTED, LOGGER);
         } catch (UnexpectedUseCaseException ex) {
             return createWarningResponse(ex, LOGGER);
         } catch (Exception ex) {

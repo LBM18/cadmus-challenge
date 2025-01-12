@@ -12,8 +12,7 @@ import org.mockito.Mock;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class AlbumDeleteCommandTests extends UseCaseUnitTests {
@@ -24,36 +23,46 @@ public class AlbumDeleteCommandTests extends UseCaseUnitTests {
 
     private final Long id = 1L;
 
+    private Album album;
+
     @BeforeEach
     public void setup() {
+        this.album = new Album(
+                this.id,
+                "Love songs",
+                2024L,
+                "Love songs cover image",
+                new Artist(
+                        1L,
+                        "Maria",
+                        "Brazilian",
+                        "https://www.maria.com.br",
+                        "Maria profile image",
+                        null
+                ),
+                null
+        );
+
         this.command = new AlbumDeleteCommand(this.id);
         this.command.set_repository(this.repositoryMock);
 
-        when(this.repositoryMock.findById(this.id)).thenReturn(
-                Optional.of(new Album(
-                        this.id,
-                        "  Love songs  ",
-                        2024L,
-                        "  Love songs cover image  ",
-                        new Artist(
-                                1L,
-                                "  Maria  ",
-                                "  Brazilian  ",
-                                "  https://www.maria.com.br  ",
-                                "  Maria profile image  ",
-                                null
-                        ),
-                        null
-                ))
-        );
+        when(this.repositoryMock.findById(this.id)).thenReturn(Optional.of(this.album));
     }
 
     @Test
-    public void shouldDeleteAlbumTest() {
-        super.facade.execute(this.command);
+    public void shouldDeleteAlbumAndReturnEntityTest() {
+        var result = super.facade.execute(this.command);
+
+        assertNotNull(result);
+        assertEquals(this.album.getId(), result.getId());
+        assertEquals(this.album.getTitle(), result.getTitle());
+        assertEquals(this.album.getReleaseYear(), result.getReleaseYear());
+        assertEquals(this.album.getCoverImage(), result.getCoverImage());
+        assertEquals(this.album.getArtist(), result.getArtist());
+        assertEquals(this.album.getMusics(), result.getMusics());
 
         verify(this.repositoryMock, times(1)).findById(this.id);
-        verify(this.repositoryMock, times(1)).deleteById(this.id);
+        verify(this.repositoryMock, times(1)).delete(this.album);
     }
 
     @Test
@@ -68,6 +77,7 @@ public class AlbumDeleteCommandTests extends UseCaseUnitTests {
                 exception.getMessage()
         );
 
-        verify(this.repositoryMock, times(0)).deleteById(this.id);
+        verify(this.repositoryMock, times(1)).findById(this.id);
+        verify(this.repositoryMock, times(0)).delete(this.album);
     }
 }

@@ -17,7 +17,12 @@ public class AlbumDeleteControllerIntegrationTests extends ControllerIntegration
 				.jsonPath("$").exists()
 				.jsonPath("$.success").isEqualTo(true)
 				.jsonPath("$.message").doesNotExist()
-				.jsonPath("$.data").doesNotExist()
+				.jsonPath("$.data").exists()
+				.jsonPath("$.data.id").exists()
+				.jsonPath("$.data.title").isEqualTo("Tranquility")
+				.jsonPath("$.data.releaseYear").isEqualTo(2025)
+				.jsonPath("$.data.coverImage").isEqualTo("Tranquility cover image")
+				.jsonPath("$.data.artistId").isEqualTo(PRE_EXISTING_ID)
 		;
 	}
 

@@ -17,7 +17,14 @@ public class MusicDeleteControllerIntegrationTests extends ControllerIntegration
 				.jsonPath("$").exists()
 				.jsonPath("$.success").isEqualTo(true)
 				.jsonPath("$.message").doesNotExist()
-				.jsonPath("$.data").doesNotExist()
+				.jsonPath("$.data.id").exists()
+				.jsonPath("$.data.title").isEqualTo("Happy day")
+				.jsonPath("$.data.duration.seconds").isEqualTo(30L)
+				.jsonPath("$.data.duration.minutes").isEqualTo(1L)
+				.jsonPath("$.data.duration.hours").isEqualTo(0L)
+				.jsonPath("$.data.track").isEqualTo(1L)
+				.jsonPath("$.data.albumId").isEqualTo(PRE_EXISTING_ID)
+				.jsonPath("$.data.album").doesNotExist()
 		;
 	}
 

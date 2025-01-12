@@ -71,7 +71,7 @@ public class AlbumCreateCommandTests extends UseCaseUnitTests {
         assertEquals(this.album.getMusics(), result.getMusics());
 
         verify(this.artistRepositoryMock, times(1)).findById(this.artistId);
-        verify(this.albumRepositoryMock, times(1)).save(any(Album.class));
+        verify(this.albumRepositoryMock, times(1)).save(this.album);
     }
 
     @Test
@@ -86,7 +86,7 @@ public class AlbumCreateCommandTests extends UseCaseUnitTests {
                 exception.getMessage()
         );
 
-        verify(this.albumRepositoryMock, times(0)).save(any(Album.class));
+        verify(this.albumRepositoryMock, times(0)).save(this.album);
     }
 
     @Test
@@ -103,6 +103,6 @@ public class AlbumCreateCommandTests extends UseCaseUnitTests {
                 exception.getMessage()
         );
 
-        verify(this.albumRepositoryMock, times(0)).save(any(Album.class));
+        verify(this.albumRepositoryMock, times(0)).save(this.album);
     }
 }

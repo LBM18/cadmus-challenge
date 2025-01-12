@@ -17,7 +17,12 @@ public class ArtistDeleteControllerIntegrationTests extends ControllerIntegratio
 				.jsonPath("$").exists()
 				.jsonPath("$.success").isEqualTo(true)
 				.jsonPath("$.message").doesNotExist()
-				.jsonPath("$.data").doesNotExist()
+				.jsonPath("$.data").exists()
+				.jsonPath("$.data.id").isEqualTo(PRE_EXISTING_ID)
+				.jsonPath("$.data.name").isEqualTo("James")
+				.jsonPath("$.data.nationality").isEqualTo("British")
+				.jsonPath("$.data.websiteAddress").isEqualTo("http://www.james.com")
+				.jsonPath("$.data.profileImage").isEqualTo("James profile image")
 		;
 	}
 

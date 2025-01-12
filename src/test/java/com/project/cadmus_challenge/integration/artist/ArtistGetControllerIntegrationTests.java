@@ -21,7 +21,7 @@ public class ArtistGetControllerIntegrationTests extends ControllerIntegrationTe
 				.jsonPath("$.message").doesNotExist()
 				.jsonPath("$.data").isArray()
 				.jsonPath("$.data.length()").isEqualTo(2)
-				.jsonPath("$.data[0].id").isEqualTo(-2)
+				.jsonPath("$.data[0].id").isEqualTo(-2L)
 				.jsonPath("$.data[0].name").isEqualTo("Joao")
 				.jsonPath("$.data[0].nationality").isEqualTo("Brazilian")
 				.jsonPath("$.data[0].websiteAddress").isEqualTo("http://www.joao.com.br")
@@ -31,7 +31,7 @@ public class ArtistGetControllerIntegrationTests extends ControllerIntegrationTe
 				.jsonPath("$.data[1].name").isEqualTo("James")
 				.jsonPath("$.data[1].nationality").isEqualTo("British")
 				.jsonPath("$.data[1].websiteAddress").isEqualTo("http://www.james.com")
-				.jsonPath("$.data[1].profileImage").isEqualTo("British profile image")
+				.jsonPath("$.data[1].profileImage").isEqualTo("James profile image")
 
 				.jsonPath("$.page").isEqualTo(0)
 				.jsonPath("$.size").isEqualTo(10)
@@ -57,7 +57,7 @@ public class ArtistGetControllerIntegrationTests extends ControllerIntegrationTe
 				.jsonPath("$.data.name").isEqualTo("James")
 				.jsonPath("$.data.nationality").isEqualTo("British")
 				.jsonPath("$.data.websiteAddress").isEqualTo("http://www.james.com")
-				.jsonPath("$.data.profileImage").isEqualTo("British profile image")
+				.jsonPath("$.data.profileImage").isEqualTo("James profile image")
 		;
 	}
 

@@ -86,7 +86,7 @@ public class AlbumEditCommandTests extends UseCaseUnitTests {
 
         verify(this.artistRepositoryMock, times(1)).findById(this.artistId);
         verify(this.albumRepositoryMock, times(1)).findById(this.albumId);
-        verify(this.albumRepositoryMock, times(1)).save(any(Album.class));
+        verify(this.albumRepositoryMock, times(1)).save(this.album);
     }
 
     @Test
@@ -101,7 +101,9 @@ public class AlbumEditCommandTests extends UseCaseUnitTests {
                 exception.getMessage()
         );
 
-        verify(this.albumRepositoryMock, times(0)).save(any(Album.class));
+        verify(this.artistRepositoryMock, times(0)).findById(this.artistId);
+        verify(this.albumRepositoryMock, times(1)).findById(this.albumId);
+        verify(this.albumRepositoryMock, times(0)).save(this.album);
     }
 
     @Test
@@ -117,7 +119,9 @@ public class AlbumEditCommandTests extends UseCaseUnitTests {
                 exception.getMessage()
         );
 
-        verify(this.albumRepositoryMock, times(0)).save(any(Album.class));
+        verify(this.artistRepositoryMock, times(1)).findById(this.artistId);
+        verify(this.albumRepositoryMock, times(1)).findById(this.albumId);
+        verify(this.albumRepositoryMock, times(0)).save(this.album);
     }
 
     @Test
@@ -135,6 +139,8 @@ public class AlbumEditCommandTests extends UseCaseUnitTests {
                 exception.getMessage()
         );
 
-        verify(this.albumRepositoryMock, times(0)).save(any(Album.class));
+        verify(this.artistRepositoryMock, times(1)).findById(this.artistId);
+        verify(this.albumRepositoryMock, times(1)).findById(this.albumId);
+        verify(this.albumRepositoryMock, times(0)).save(this.album);
     }
 }

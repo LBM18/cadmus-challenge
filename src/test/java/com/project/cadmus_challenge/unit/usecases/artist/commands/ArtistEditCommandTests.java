@@ -66,7 +66,7 @@ public class ArtistEditCommandTests extends UseCaseUnitTests {
         assertEquals(this.artist.getAlbums(), result.getAlbums());
 
         verify(this.repositoryMock, times(1)).findById(this.id);
-        verify(this.repositoryMock, times(1)).save(any(Artist.class));
+        verify(this.repositoryMock, times(1)).save(this.artist);
     }
 
     @Test
@@ -81,7 +81,8 @@ public class ArtistEditCommandTests extends UseCaseUnitTests {
                 exception.getMessage()
         );
 
-        verify(this.repositoryMock, times(0)).save(any(Artist.class));
+        verify(this.repositoryMock, times(1)).findById(this.id);
+        verify(this.repositoryMock, times(0)).save(this.artist);
     }
 
     @Test
@@ -96,6 +97,7 @@ public class ArtistEditCommandTests extends UseCaseUnitTests {
                 exception.getMessage()
         );
 
-        verify(this.repositoryMock, times(0)).save(any(Artist.class));
+        verify(this.repositoryMock, times(1)).findById(this.id);
+        verify(this.repositoryMock, times(0)).save(this.artist);
     }
 }

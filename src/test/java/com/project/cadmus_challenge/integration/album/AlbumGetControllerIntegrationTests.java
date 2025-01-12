@@ -22,15 +22,15 @@ public class AlbumGetControllerIntegrationTests extends ControllerIntegrationTes
 				.jsonPath("$.data").isArray()
 				.jsonPath("$.data.length()").isEqualTo(2)
 
-				.jsonPath("$.data[0].id").isEqualTo(-2)
+				.jsonPath("$.data[0].id").isEqualTo(-2L)
 				.jsonPath("$.data[0].title").isEqualTo("Happiness")
-				.jsonPath("$.data[0].releaseYear").isEqualTo(2022)
+				.jsonPath("$.data[0].releaseYear").isEqualTo(2022L)
 				.jsonPath("$.data[0].coverImage").isEqualTo("Happiness cover image")
-				.jsonPath("$.data[0].artistId").isEqualTo(-2)
+				.jsonPath("$.data[0].artistId").isEqualTo(-2L)
 
 				.jsonPath("$.data[1].id").isEqualTo(PRE_EXISTING_ID)
 				.jsonPath("$.data[1].title").isEqualTo("Tranquility")
-				.jsonPath("$.data[1].releaseYear").isEqualTo(2025)
+				.jsonPath("$.data[1].releaseYear").isEqualTo(2025L)
 				.jsonPath("$.data[1].coverImage").isEqualTo("Tranquility cover image")
 				.jsonPath("$.data[1].artistId").isEqualTo(PRE_EXISTING_ID)
 
@@ -56,7 +56,7 @@ public class AlbumGetControllerIntegrationTests extends ControllerIntegrationTes
 				.jsonPath("$.data").exists()
 				.jsonPath("$.data.id").isEqualTo(PRE_EXISTING_ID)
 				.jsonPath("$.data.title").isEqualTo("Tranquility")
-				.jsonPath("$.data.releaseYear").isEqualTo(2025)
+				.jsonPath("$.data.releaseYear").isEqualTo(2025L)
 				.jsonPath("$.data.coverImage").isEqualTo("Tranquility cover image")
 				.jsonPath("$.data.artistId").isEqualTo(PRE_EXISTING_ID)
 		;

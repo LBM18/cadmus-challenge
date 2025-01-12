@@ -7,7 +7,7 @@ import org.springframework.data.domain.Page;
 public interface IArtistService {
     ArtistOutputDto create(ArtistInputDto dto);
     ArtistOutputDto update(Long id, ArtistInputDto dto);
-    void delete(Long id);
+    ArtistOutputDto delete(Long id);
     ArtistOutputDto findById(Long id);
     Page<ArtistOutputDto> findAll(Integer page, Integer size);
 }

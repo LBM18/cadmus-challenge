@@ -1,5 +1,5 @@
 INSERT INTO tb_artist   (id_artist, tx_name, tx_nationality, tx_website_address, tx_profile_image)
-                VALUES  (0, 'James', 'British', 'http://www.james.com', 'British profile image');
+                VALUES  (0, 'James', 'British', 'http://www.james.com', 'James profile image');
 INSERT INTO tb_artist   (id_artist, tx_name, tx_nationality, tx_website_address, tx_profile_image)
                 VALUES  (-2, 'Joao', 'Brazilian', 'http://www.joao.com.br', 'Joao profile image');
 

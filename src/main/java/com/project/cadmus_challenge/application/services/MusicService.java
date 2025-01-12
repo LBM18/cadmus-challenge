@@ -39,8 +39,9 @@ public class MusicService implements IMusicService {
     }
 
     @Override
-    public void delete(Long id) {
-        this.facade.execute(new MusicDeleteCommand(id));
+    public MusicOutputDto delete(Long id) {
+        var result = this.facade.execute(new MusicDeleteCommand(id));
+        return _mapper.toDto(result, false);
     }
 
     @Override

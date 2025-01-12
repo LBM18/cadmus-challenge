@@ -49,7 +49,7 @@ public class ArtistCreateCommandTests extends UseCaseUnitTests {
         assertEquals(this.artist.getProfileImage().trim(), result.getProfileImage());
         assertEquals(this.artist.getAlbums(), result.getAlbums());
 
-        verify(this.repositoryMock, times(1)).save(any(Artist.class));
+        verify(this.repositoryMock, times(1)).save(this.artist);
     }
 
     @Test
@@ -64,6 +64,6 @@ public class ArtistCreateCommandTests extends UseCaseUnitTests {
                 exception.getMessage()
         );
 
-        verify(this.repositoryMock, times(0)).save(any(Artist.class));
+        verify(this.repositoryMock, times(0)).save(this.artist);
     }
 }

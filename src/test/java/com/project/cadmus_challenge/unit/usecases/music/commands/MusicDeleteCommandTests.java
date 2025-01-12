@@ -12,8 +12,7 @@ import org.mockito.Mock;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class MusicDeleteCommandTests extends UseCaseUnitTests {
@@ -24,35 +23,44 @@ public class MusicDeleteCommandTests extends UseCaseUnitTests {
 
     private final Long id = 1L;
 
+    private Music music;
+
     @BeforeEach
     public void setup() {
+        this.music = new Music(
+                this.id,
+                "Imagine",
+                120L,
+                1L,
+                new Album(
+                        1L,
+                        "Love songs",
+                        2024L,
+                        "Love songs cover image",
+                        null,
+                        null
+                )
+        );
+
         this.command = new MusicDeleteCommand(this.id);
         this.command.set_repository(this.repositoryMock);
 
-        when(this.repositoryMock.findById(this.id)).thenReturn(
-                Optional.of(new Music(
-                        this.id,
-                        "  Imagine  ",
-                        120L,
-                        1L,
-                        new Album(
-                                1L,
-                                "  Love songs  ",
-                                2024L,
-                                "  Love songs cover image  ",
-                                null,
-                                null
-                        )
-                ))
-        );
+        when(this.repositoryMock.findById(this.id)).thenReturn(Optional.of(this.music));
     }
 
     @Test
-    public void shouldDeleteMusicTest() {
-        super.facade.execute(this.command);
+    public void shouldDeleteMusicAndReturnEntityTest() {
+        var result = super.facade.execute(this.command);
+
+        assertNotNull(result);
+        assertEquals(this.music.getId(), result.getId());
+        assertEquals(this.music.getTitle(), result.getTitle());
+        assertEquals(this.music.getDuration(), result.getDuration());
+        assertEquals(this.music.getTrack(), result.getTrack());
+        assertEquals(this.music.getAlbum(), result.getAlbum());
 
         verify(this.repositoryMock, times(1)).findById(this.id);
-        verify(this.repositoryMock, times(1)).deleteById(this.id);
+        verify(this.repositoryMock, times(1)).delete(this.music);
     }
 
     @Test
@@ -67,6 +75,7 @@ public class MusicDeleteCommandTests extends UseCaseUnitTests {
                 exception.getMessage()
         );
 
-        verify(this.repositoryMock, times(0)).deleteById(this.id);
+        verify(this.repositoryMock, times(1)).findById(this.id);
+        verify(this.repositoryMock, times(0)).delete(this.music);
     }
 }

@@ -34,8 +34,9 @@ public class ArtistService implements IArtistService {
     }
 
     @Override
-    public void delete(Long id) {
-        this.facade.execute(new ArtistDeleteCommand(id));
+    public ArtistOutputDto delete(Long id) {
+        var result = this.facade.execute(new ArtistDeleteCommand(id));
+        return _mapper.toDto(result);
     }
 
     @Override

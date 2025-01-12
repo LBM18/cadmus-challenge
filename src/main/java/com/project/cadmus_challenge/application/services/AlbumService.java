@@ -34,8 +34,9 @@ public class AlbumService implements IAlbumService {
     }
 
     @Override
-    public void delete(Long id) {
-        this.facade.execute(new AlbumDeleteCommand(id));
+    public AlbumOutputDto delete(Long id) {
+        var result = this.facade.execute(new AlbumDeleteCommand(id));
+        return _mapper.toDto(result);
     }
 
     @Override
