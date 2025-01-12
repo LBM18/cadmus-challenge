@@ -1,4 +1,4 @@
 package com.project.cadmus_challenge.core.bases;
 
-public interface LazyValidation {
+public interface ILazyValidation {
 }

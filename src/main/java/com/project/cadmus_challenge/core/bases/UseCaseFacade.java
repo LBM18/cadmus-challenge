@@ -11,7 +11,7 @@ import java.util.Set;
 @Component
 @RequiredArgsConstructor
 public class UseCaseFacade {
-    private final UseCaseManager manager;
+    private final IUseCaseManager manager;
     private final Validator validator;
 
     @Transactional
@@ -36,7 +36,7 @@ public class UseCaseFacade {
     }
 
     protected void validate(Object usecase) {
-        Set<ConstraintViolation<Object>> violations = this.validator.validate(usecase, UseCaseValidationOrder.class);
+        Set<ConstraintViolation<Object>> violations = this.validator.validate(usecase, IUseCaseValidationOrder.class);
         if (!violations.isEmpty()) {
             StringBuilder errorMessages = new StringBuilder("Validation exception: ");
             violations.forEach(violation -> errorMessages.append(violation.getMessage()).append(","));
