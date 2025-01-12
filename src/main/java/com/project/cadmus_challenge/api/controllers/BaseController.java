@@ -1,4 +1,4 @@
-package com.project.cadmus_challenge.api.bases;
+package com.project.cadmus_challenge.api.controllers;
 
 import com.project.cadmus_challenge.api.responseobjs.ListResultDto;
 import com.project.cadmus_challenge.api.responseobjs.PageResultDto;

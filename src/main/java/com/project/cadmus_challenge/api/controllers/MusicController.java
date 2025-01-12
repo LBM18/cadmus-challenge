@@ -1,6 +1,5 @@
 package com.project.cadmus_challenge.api.controllers;
 
-import com.project.cadmus_challenge.api.bases.BaseController;
 import com.project.cadmus_challenge.api.responseobjs.ListResultDto;
 import com.project.cadmus_challenge.api.responseobjs.PageResultDto;
 import com.project.cadmus_challenge.api.responseobjs.SingleResultDto;
@@ -61,7 +60,8 @@ public class MusicController extends BaseController {
             @ApiResponse(responseCode = "500", description = "Unexpected internal server error.")
     })
     public ResponseEntity<SingleResultDto<MusicOutputDto>> update(
-            @PathVariable("id") Long id, @RequestBody @Valid MusicInputDto dto
+            @PathVariable("id") Long id,
+            @RequestBody @Valid MusicInputDto dto
     ) {
         try {
             var result = _service.update(id, dto);

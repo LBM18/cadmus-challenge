@@ -1,9 +1,9 @@
 package com.project.cadmus_challenge.api.controllers;
 
-import com.project.cadmus_challenge.api.bases.BaseController;
+import com.project.cadmus_challenge.api.bases.ArtistInputWrapper;
+import com.project.cadmus_challenge.api.bases.FileStorageHandler;
 import com.project.cadmus_challenge.api.responseobjs.PageResultDto;
 import com.project.cadmus_challenge.api.responseobjs.SingleResultDto;
-import com.project.cadmus_challenge.application.dtos.ArtistInputDto;
 import com.project.cadmus_challenge.application.dtos.ArtistOutputDto;
 import com.project.cadmus_challenge.application.services.IArtistService;
 import com.project.cadmus_challenge.core.bases.UnexpectedUseCaseException;
@@ -15,7 +15,9 @@ import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +30,7 @@ public class ArtistController extends BaseController {
     @Autowired
     private IArtistService _service;
 
-    @PostMapping
+    @PostMapping(value = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Create new artist", description = "Create a single new artist using the requested body.")
     @ApiResponses({
@@ -38,10 +40,11 @@ public class ArtistController extends BaseController {
             @ApiResponse(responseCode = "500", description = "Unexpected internal server error.")
     })
     public ResponseEntity<SingleResultDto<ArtistOutputDto>> create(
-            @RequestBody @Valid ArtistInputDto dto
+            @ModelAttribute @Valid ArtistInputWrapper dto
     ) {
         try {
-            var result = _service.create(dto);
+            var result = _service.create(dto.toInputDto());
+            FileStorageHandler.uploadImage(dto.profileImage(), getImageUniqueIdentifier(result));
             return createSuccessResponse(result, HttpStatus.CREATED, LOGGER);
         } catch (UnexpectedUseCaseException ex) {
             return createWarningResponse(ex, LOGGER);
@@ -50,7 +53,7 @@ public class ArtistController extends BaseController {
         }
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
     @Operation(summary = "Update artist", description = "Update a single pre-existing artist by its unique identifier using the requested body.")
     @ApiResponses({
@@ -60,10 +63,12 @@ public class ArtistController extends BaseController {
             @ApiResponse(responseCode = "500", description = "Unexpected internal server error.")
     })
     public ResponseEntity<SingleResultDto<ArtistOutputDto>> update(
-            @PathVariable("id") Long id, @RequestBody @Valid ArtistInputDto dto
+            @PathVariable("id") Long id,
+            @ModelAttribute @Valid ArtistInputWrapper dto
     ) {
         try {
-            var result = _service.update(id, dto);
+            var result = _service.update(id, dto.toInputDto());
+            FileStorageHandler.uploadImage(dto.profileImage(), getImageUniqueIdentifier(result));
             return createSuccessResponse(result, HttpStatus.ACCEPTED, LOGGER);
         } catch (UnexpectedUseCaseException ex) {
             return createWarningResponse(ex, LOGGER);
@@ -86,6 +91,7 @@ public class ArtistController extends BaseController {
     ) {
         try {
             var result = _service.delete(id);
+            FileStorageHandler.deleteImage(result.profileImage(), getImageUniqueIdentifier(result));
             return createSuccessResponse(result, HttpStatus.ACCEPTED, LOGGER);
         } catch (UnexpectedUseCaseException ex) {
             return createWarningResponse(ex, LOGGER);
@@ -135,5 +141,44 @@ public class ArtistController extends BaseController {
         } catch (Exception ex) {
             return createPageErrorResponse(ex, LOGGER);
         }
+    }
+
+    @GetMapping("/image/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Get Artist Profile Image (JPEG)", description = "Retrieve the profile image (JPEG) of the artist.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Artist profile image retrieved successfully."),
+            @ApiResponse(responseCode = "400", description = "Bad request, unacceptable format or data."),
+            @ApiResponse(responseCode = "404", description = "Artist or image not found."),
+            @ApiResponse(responseCode = "500", description = "Unexpected internal server error.")
+    })
+    public ResponseEntity<Resource> getArtistProfileImage(
+            @PathVariable Long id
+    ) {
+        try {
+            var dto = _service.findById(id);
+            if (dto == null) {
+                LOGGER.warn("Artist not found for ID: " + id);
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            var resource = FileStorageHandler.getImage(
+                    dto.profileImage(),
+                    getImageUniqueIdentifier(dto)
+            );
+            if (resource == null || !resource.exists()) {
+                LOGGER.warn("Image not found for artist ID: " + id);
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return ResponseEntity.ok()
+                    .contentType(MediaType.IMAGE_JPEG)
+                    .body(resource);
+        } catch (Exception ex) {
+            LOGGER.error("Error retrieving artist profile image for ID: " + id + " - " + ex.getMessage(), ex);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    private static String getImageUniqueIdentifier(ArtistOutputDto dto) {
+        return "Artist" + dto.id();
     }
 }
