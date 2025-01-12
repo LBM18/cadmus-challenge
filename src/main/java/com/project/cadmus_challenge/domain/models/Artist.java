@@ -33,7 +33,7 @@ public class Artist {
     private String websiteAddress;
 
     @NotBlank(message = "{notBlank.artist.profileImage}")
-    @Column(name = "tx_profile_image", nullable = false, length = 300)
+    @Column(name = "tx_profile_image", nullable = false, length = 500)
     private String profileImage;
 
     @OneToMany(mappedBy = "artist", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)

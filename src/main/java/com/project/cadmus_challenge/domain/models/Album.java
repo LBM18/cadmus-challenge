@@ -32,7 +32,7 @@ public class Album {
     private Long releaseYear;
 
     @NotBlank(message = "{notBlank.album.coverImage}")
-    @Column(name = "tx_cover_image", nullable = false, length = 300)
+    @Column(name = "tx_cover_image", nullable = false, length = 500)
     private String coverImage;
 
     @NotNull(message = "{notNull.album.artist}")
