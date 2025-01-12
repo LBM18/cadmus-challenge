@@ -1,4 +1,4 @@
-package com.project.cadmus_challenge.mappers;
+package com.project.cadmus_challenge.unit.mappers;
 
 import com.project.cadmus_challenge.application.dtos.AlbumInputDto;
 import com.project.cadmus_challenge.application.mappers.AlbumMapper;

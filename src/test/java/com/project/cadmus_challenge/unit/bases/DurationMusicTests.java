@@ -1,4 +1,4 @@
-package com.project.cadmus_challenge.bases;
+package com.project.cadmus_challenge.unit.bases;
 
 import com.project.cadmus_challenge.application.bases.DurationMusic;
 import org.junit.jupiter.api.Test;
